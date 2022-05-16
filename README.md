@@ -5,14 +5,14 @@ This is a simple script to calculate S(Q,E) from lammps trajectories using Fouri
 2. Then you run
 ``` 
 python calculate_sqe_correlate.py
-'''
+```
 
 I did this on a cluster, which took about 10 mins.
 
-3. Step 2 should generate `freq.txt' and `sqe_2k0.txt'. Then you run
+3. Step 2 should generate `freq.txt` and `sqe_2k0.txt`. Then you run
 ```
 python plot_total.py
-'''
+```
 
 to obtain the SQE figure.
 
