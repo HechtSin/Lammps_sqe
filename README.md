@@ -6,19 +6,17 @@ This is a simple script to calculate S(Q,E) from lammps trajectories using Fouri
 ``` 
 python calculate_sqe_correlate.py
 ```
-
 I did this on a cluster, which took about 10 mins.
 
 3. Step 2 should generate `freq.txt` and `sqe_2k0.txt`. Then you run
 ```
 python plot_total.py
 ```
-
 to obtain the SQE figure.
 
 Comments:
 1. My math is not good, but I hope this script is correct.
 2. I didn't include neutron/x-ray scattering length, so the intensities are not directly comparable with experiments. But can be included easily.
-3. The supercell size is 5*5*5 so incommensurate Q points have signularity.
+3. The supercell size is 555 so incommensurate Q points have signularity.
 4. Gamma points also have singularities, which I don't know why yet.
 5. Will check later when I have more time.
