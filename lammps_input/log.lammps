@@ -1,0 +1,304 @@
+LAMMPS (22 Dec 2022)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+units           metal                       #Use this units for DynaPhoPy
+atom_style      atomic
+
+boundary        p p p                       #Periodical conditions
+
+read_data       structure.in                     #Structure file
+Reading data file ...
+  triclinic box = (0 0 0) to (56.309504 56.309504 56.309504) with tilt (0 0 0)
+  4 by 4 by 8 MPI processor grid
+  reading atoms ...
+  8000 atoms
+  read_data CPU = 0.123 seconds
+
+pair_style      eim
+pair_coeff      * * Na Cl ffield.eim Na Cl
+Reading potential file ffield.eim with DATE: 2010-08-31
+
+variable        t equal 300                 #Define the temperature
+
+neighbor        0.3 bin
+neigh_modify    delay 0
+
+timestep        0.002                       #Define time step
+
+
+thermo_style    custom step etotal temp vol press
+thermo          100
+
+velocity        all create $t 3627941 dist gaussian mom yes
+velocity        all create 300 3627941 dist gaussian mom yes
+velocity        all scale $t
+velocity        all scale 300
+
+fix             int all nvt temp $t $t 0.1  #Canonical ensemble
+fix             int all nvt temp 300 $t 0.1  
+fix             int all nvt temp 300 300 0.1  
+
+dump            1 all custom 1 nvtpositions.lammpstrj x y z
+dump_modify     1 every 1
+dump_modify     1 sort id
+dump_modify     1 format line "%.6f %.6f %.6f"
+
+dump            2 all custom 1 velocity.lammpstrj vx vy vz
+dump_modify     2 every 1
+dump_modify     2 sort id
+dump_modify     2 format line "%.6f %.6f %.6f"
+
+run             10000                      #Number of timesteps
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.906
+  ghost atom cutoff = 7.906
+  binsize = 3.953, bins = 15 15 15
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eim, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.884 | 5.884 | 5.885 Mbytes
+   Step         TotEng          Temp          Volume         Press     
+         0  -26206.089      300            178543.93      1855.648     
+       100  -26153.57       165.88126      178543.93      5401.7711    
+       200  -26073.006      196.72622      178543.93      7010.7585    
+       300  -25983.357      264.49071      178543.93      7937.5579    
+       400  -25905.764      299.15442      178543.93      9442.903     
+       500  -25878.63       312.18096      178543.93      10107.585    
+       600  -25910.974      289.78294      178543.93      9731.1699    
+       700  -25907.299      296.16677      178543.93      9630.4638    
+       800  -25885.566      314.50881      178543.93      9813.8482    
+       900  -25904.524      310.80728      178543.93      9420.9953    
+      1000  -25907.776      288.76106      178543.93      9643.4681    
+      1100  -25889.732      303.95287      178543.93      9760.7656    
+      1200  -25901.245      303.03518      178543.93      9614.8515    
+      1300  -25908.74       293.11064      178543.93      9589.61      
+      1400  -25892.144      298.77506      178543.93      9939.8143    
+      1500  -25899.196      296.21232      178543.93      9676.3765    
+      1600  -25907.785      293.94662      178543.93      9548.2155    
+      1700  -25894.943      300.98349      178543.93      9711.7222    
+      1800  -25897.005      302.60303      178543.93      9805.4261    
+      1900  -25907.156      293.90228      178543.93      9626.1746    
+      2000  -25897.37       302.85999      178543.93      9596.145     
+      2100  -25895.292      305.24261      178543.93      9618.5177    
+      2200  -25906.34       291.67468      178543.93      9609.895     
+      2300  -25899.626      302.22711      178543.93      9625.7753    
+      2400  -25894.289      297.40746      178543.93      9816.3836    
+      2500  -25904.718      294.52222      1785      4200  -25898.826      300.86368      178543.93      9754.9162    
+      4300  -25896.991      299.5268       178543.93      9732.4615    
+      4400  -25904.188      297.56262      178543.93      9701.6828    
+      4500  -25899.859      294.634        178543.93      9740.5421    
+      4600  -25896.274      303.01012      178543.93      9892.6553    
+      4700  -25902.525      300.7894       178543.93      9664.1723    
+      4800  -25901.731      301.59917      178543.93      9648.7424    
+      4900  -25895.602      299.79359      178543.93      9806.3865    
+      5000  -25903.852      299.87316      178543.93      9647.5548    
+      5100  -25902.782      300.41123      178543.93      9600.199     
+      5200  -25899.828      300.17442      178543.93      9613.0424    
+      5300  -25897.872      302.02235      178543.93      9784.6055    
+      5400  -25905.388      296.32473      178543.93      9647.9564    
+      5500  -25896.918      309.2257       178543.93      9642.2147    
+      5600  -25898.169      299.64735      178543.93      9856.3388    
+      5700  -25904.773      300.31519      178543.93      9551.9388    
+      5800  -25907.831      301.82776      178543.93      9435.4634    
+      5900  -25898.179      302.62449      178543.93      9725.3937    
+      6000  -25898.85       303.33008      178543.93      9611.1325    
+      6100  -25907.092      293.07226      178543.93      9612.0257    
+      6200  -25897.247      302.13453      178543.93      9814.0725    
+      6300  -25899.927      305.36253      178543.93      9638.7362    
+      6400  -25904.868      302.15829      178543.93      9505.1104    
+      6500  -25897.303      297.72024      178543.93      9815.094     
+      6600  -25898.047      296.01878      178543.93      9802.2179    
+      6700  -25905.015      299.04082      178543.93      9597.0359    
+      6800  -25898.324      305.88212      178543.93      9627.3791    
+      6900  -25898.999      300.21988      178543.93      9823.6633    
+      7000  -25900.556      296.92348      178543.93      9681.8165    
+      7100  -25899.925      302.21968      178543.93      9713.5477    
+      7200  -25894.712      301.8111       178543.93      9775.2598    
+      7300  -25902.491      297.96678      178543.93      9705.0685    
+      7400  -25901.408      301.25088      178543.93      9610.9901    
+      7500  -25894.521      302.07036      178543.93      9775.6395    
+      7600  -25905.535      297.44722      178543.93      9618.7029    
+      7700  -25899.208      298.88568      178543.93      9705.6842    
+      7800  -25897.657      302.38669      178543.93      9781.2398    
+      7900  -25906.7        294.88785      178543.93      9634.3877    
+      8000  -25911.492      293.04666      178543.93      9529.5802    
+      8100  -25899.813      298.40304      178543.93      9756.7763    
+      8200  -25896.653      304.33259      178543.93      9661.179     
+      8300  -25906.512      296.44624      178543.93      9579.8954    
+      8400  -25901.048      296.43714      178543.93      9752.1689    
+      8500  -25899.219      299.04453      178543.93      9784.5731    
+      8600  -25901.201      298.51317      178543.93      9793.7365    
+      8700  -25904.878      299.16606      178543.93      9546.6344    
+      8800  -25896.643      300.34471      178543.93      9777.1925    
+      8900  -25901.638      296.83113      178543.93      9747.2253    
+      9000  -25912.139      293.84988      178543.93      9473.1686    
+      9100  -25903.993      300.39473      178543.93      9566.6403    
+      9200  -25897.885      297.35473      178543.93      9777.828     
+      9300  -25900.757      294.85718      178543.93      9687.0385    
+      9400  -25905.954      299.51125      178543.93      9675.58      
+      9500  -25895.894      300.23569      178543.93      9767.1175    
+      9600  -25902.234      296.92781      178543.93      9704.8432    
+      9700  -25903.038      298.33147      178543.93      9703.6098    
+      9800  -25895.163      306.30695      178543.93      9681.3317    
+      9900  -25903.962      301.27197      178543.93      9507.4853    
+     10000  -25901.719      298.9929       178543.93      9644.7366    
+Loop time of 254.942 on 128 procs for 10000 steps with 8000 atoms
+
+Performance: 6.778 ns/day, 3.541 hours/ns, 39.225 timesteps/s, 313.797 katom-step/s
+99.0% CPU use with 128 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5.7464     | 5.9836     | 6.2402     |   5.4 |  2.35
+Neigh   | 0.21097    | 0.22033    | 0.3018     |   1.9 |  0.09
+Comm    | 5.5495     | 5.8544     | 6.1809     |   6.8 |  2.30
+Output  | 139.64     | 190.63     | 242.3      | 210.5 | 74.77
+Modify  | 0.35452    | 0.49087    | 0.66205    |  12.4 |  0.19
+Other   |            | 51.76      |            |       | 20.30
+
+Nlocal:           62.5 ave          74 max          46 min
+Histogram: 1 1 4 17 12 30 26 25 8 4
+Nghost:          737.5 ave         754 max         726 min
+Histogram: 4 8 25 26 20 22 17 4 1 1
+Neighs:        2514.65 ave        3055 max        1866 min
+Histogram: 1 1 8 17 23 31 22 16 6 3
+
+Total # of neighbors = 321875
+Ave neighs/atom = 40.234375
+Neighbor list builds = 1746
+Dangerous builds = 0
+Total wall time: 0:04:15
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
+[CRAYBLAS_WARNING] Application linked against multiple cray-libsci libraries
