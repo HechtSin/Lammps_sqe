@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 plt.rcParams.update({'font.size':18})
 
-sqe = np.loadtxt('sqe_2K0_full.txt',dtype=complex)
+sqe = np.loadtxt('sqe_2k0_full.txt',dtype=complex)
 print (sqe.shape)
 sqe = np.abs(sqe)
 freq = np.loadtxt('freq_full.txt')
@@ -16,9 +16,9 @@ sqe /= 2
 
 fig, ax = plt.subplots(figsize=(8,6))
 
-vmin = 5e3
-vmax = 5e5
-im = ax.imshow(np.rot90(sqe),norm=LogNorm(vmin=vmin,vmax=vmax),aspect='auto',cmap='viridis',interpolation='bilinear')
+vmin = 5e2
+vmax = 5e4
+im = ax.imshow(np.rot90(sqe),norm=LogNorm(vmin=vmin,vmax=vmax),aspect='auto',cmap='viridis')
 
 ax.set_ylim(0,400)
 yticks = np.linspace(0,400,6)
@@ -32,7 +32,7 @@ xl = np.linspace(-1,1,5)
 ax.set_xticks(xticks)
 ax.set_xticklabels(xl)
 
-ax.set_ylabel('Energy (THz)')
+ax.set_ylabel('Energy (meV)')
 ax.set_xlabel('2 K 0 (r.l.u.)')
 fig.colorbar(im)
 plt.savefig('2K0_full.png')

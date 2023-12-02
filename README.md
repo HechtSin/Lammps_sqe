@@ -19,6 +19,5 @@ python plot_2K0_full.py
 to obtain the SQE figure.
 
 Comments:
-1. Gamma points also have singularities, which I don't know why yet.
-2. Will check later when I have more time.
-3. Once I have more time, I will also do phonon spectral energy density (SED) and phonon density of states (DOS) calculations
+Added diffuse scattering simulation
+Once I have more time, I will also do phonon spectral energy density (SED) and phonon density of states (DOS) calculations
